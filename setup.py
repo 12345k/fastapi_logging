@@ -12,19 +12,21 @@ __author_email__ = "karathickaravindan@gmail.com"
 __license__ = "MIT"
 __requires__ = ["fastapi","starlette","user_agents","pydantic" ]
 __keywords__ = ["fastapi","logging","custom","router"]
+__version__ = "0.0.2"
+__author__ = "karthick aravindan (12345k)"
 
 here = pathlib.Path(__file__).parent
 about = {}
 
-# Load the package's _version.py module as a dictionary.
-with open(os.path.join(here, __title__, "_version.py")) as f:
-    exec(f.read(), about)
+# # Load the package's _version.py module as a dictionary.
+# with open(os.path.join(here, __title__, "_version.py")) as f:
+#     exec(f.read(), about)
 
 with open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 
-__version__ = about["__version__"]
+# __version__ = about["__version__"]
 
 
 class UploadCommand(Command):
@@ -70,7 +72,7 @@ setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
     url=__url__,
-    author=about["__author__"],
+    author=__author__, #about["__author__"],
     author_email=__author_email__,
     license=__license__,
     packages=find_packages(exclude=("test",)),
