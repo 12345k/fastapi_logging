@@ -6,13 +6,13 @@ from shutil import rmtree
 from setuptools import Command, find_packages, setup
 
 __title__ = "fastapi_route_log"
-__description__ = "A FastAPI route forlogging every request " 
+__description__ = "A FastAPI route for logging every request " 
 __url__ = "https://github.com/12345k/fastapi_logging.git"
 __author_email__ = "karathickaravindan@gmail.com"
 __license__ = "MIT"
 __requires__ = ["fastapi","starlette","user_agents","pydantic" ]
 __keywords__ = ["fastapi","logging","custom","router"]
-__version__ = "0.0.2"
+__version__ = "0.0.4"
 __author__ = "karthick aravindan (12345k)"
 
 here = pathlib.Path(__file__).parent
@@ -27,42 +27,6 @@ with open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
 
 
 # __version__ = about["__version__"]
-
-
-class UploadCommand(Command):
-    description = "Build and publish the package."
-    user_options = []
-    
-    @staticmethod
-    def status(s):
-        print(f"✨✨ {s}")
-    
-    def initialize_options(self):
-        pass
-    
-    def finalize_options(self):
-        pass
-    
-    def run(self):
-        try:
-            self.status("Removing previous builds…")
-            rmtree(os.path.join(here, "dist"))
-            rmtree(os.path.join(here, "build"))
-            rmtree(os.path.join(here, "{0}.egg-info".format(__title__)))
-        except OSError:
-            pass
-        
-        self.status("Building Source and Wheel distribution…")
-        os.system(f"{sys.executable} setup.py bdist_wheel")
-        
-        self.status("Uploading the package to PyPI via Twine…")
-        os.system("twine upload dist/*")
-        
-        self.status("Pushing git tags…")
-        os.system('git tag -a v{0} -m "release version v{0}"'.format(__version__))
-        os.system("git push origin v{0}".format(__version__))
-        
-        sys.exit()
 
 
 setup(
@@ -93,5 +57,5 @@ setup(
         "Programming Language :: Python :: 3.9",
         "Topic :: Software Development :: Libraries",
     ],
-    cmdclass={"upload": UploadCommand},
+
 )

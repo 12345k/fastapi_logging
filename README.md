@@ -17,7 +17,11 @@ from fastapi_route_log.log_request import LoggingRoute
 app = FastAPI()
 app.router.route_class = LoggingRoute
 ```
+# Example/Test
 
+```python
+uvicorn example.main:app --reload
+```
 
 # Output
 
