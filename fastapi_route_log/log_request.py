@@ -49,7 +49,6 @@ class LoggingRoute(APIRoute):
                     "env": os.environ.get("ENV"),
                     "region": os.environ.get("REGION"),
                     "name": os.environ.get("NAME"),
-                 
                     "method": request.method,
                     "useragent":
                     {
