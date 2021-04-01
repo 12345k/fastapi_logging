@@ -1,6 +1,15 @@
-# fastapi_route_log
 
-A FastAPI router for logging every request
+<center><h1> Fastapi Route Log </h1></center>
+<p align="center">
+
+
+<a href="https://pypi.org/project/fastapi-route-log/" target="_blank">
+<img src="https://img.shields.io/pypi/v/fastapi-route-log?color=%2334D058&label=pypi package" alt="Package version">
+</a>
+<img alt="License" src="https://img.shields.io/github/license/12345k/fastapi_logging"  />
+</p>
+
+A FastAPI router for logging every request.
 
 # Installation
 
@@ -89,6 +98,3 @@ INFO:     127.0.0.1:45872 - "POST /hello_world?get=hello HTTP/1.1" 200 OK
 
 ```
 
-# License
-
-MIT
