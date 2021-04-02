@@ -1,3 +1,4 @@
+import re
 import time
 from starlette.requests import Request
 from typing import Callable
@@ -10,6 +11,15 @@ from user_agents import parse
 from urllib.parse import parse_qs
 from datetime import datetime
 from fastapi.routing import APIRoute
+import sqlite3
+
+conn = sqlite3.connect('./data/test.db')
+
+conn.execute('''CREATE TABLE IF NOT EXISTS REQUEST
+         (ENDPOINT        TEXT    NOT NULL,
+         TYPE            INT     NOT NULL,
+         BODY            CHAR(50),
+         UUID            REAL);''')
 
 class LoggingRoute(APIRoute):
     def get_route_handler(self) -> Callable:
@@ -80,7 +90,6 @@ class LoggingRoute(APIRoute):
                     'ts': f'{datetime.now():%Y-%m-%d %H:%M:%S%z}'   
 
                 }
-                
                 print(json.dumps(request_json,indent=4))
                 
                 start_time = time.time()
@@ -106,6 +115,22 @@ class LoggingRoute(APIRoute):
                 
                 
                 print(json.dumps(metrics_json,indent=4))
+
+                try:
+                    if len(request_json) !=0:
+                        url = str(request_json["url"]).replace("/","")
+                        method=request_json["method"]
+                        body=str(request_json["body"])
+                        uuid_str=request_json["uuid"]
+                        # print(body)
+                        conn.execute(f"INSERT INTO REQUEST VALUES (?,?,?,?)",( url , method, body, uuid_str ))
+                        
+                        # VALUES ({request_json["url"].replace("/","")}, {request_json["method"]},"str(request_json[body])", {request_json["uuid"]} )""");
+                    conn.commit()
+                except Exception as exc:
+                    print(exc)
+                    pass
+
                 return response
 
             except Exception as exc:

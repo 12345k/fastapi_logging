@@ -4,7 +4,7 @@
 
 
 <a href="https://pypi.org/project/fastapi-route-log/" target="_blank">
-<img src="https://img.shields.io/pypi/v/fastapi-route-log?color=%2334D058&label=pypi package" alt="Package version">
+<img src="https://img.shields.io/pypi/v/fastapi-route-log?color=%2334D058label=pypi package" alt="Package version">
 </a>
 <img alt="License" src="https://img.shields.io/github/license/12345k/fastapi_logging"  />
 </p>
@@ -16,7 +16,13 @@ A FastAPI router for logging every request.
 ```buildoutcfg
 $ pip install fastapi_route_log
 ```
+# Dashboard testing
 
+```python
+cd fastapi_route_log
+uvicorn dev.main:app --reload
+```
+check the url: http://localhost:8000/fastapi_dashboard
 
 # Code Sample
 
