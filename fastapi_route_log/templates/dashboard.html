@@ -22,6 +22,39 @@
     All Data:
 
     {{ data }}
-    
+  <br>
+    Unique API:
+    <table class="table table-striped table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <th>name</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for end in API %}
+        <tr>
+          <td>{{end.name}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <br>
+    API FREQUENCY:
+    <table class="table table-striped table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <th>name</th>
+          <th>count</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for end in API_Frequency %}
+        <tr>
+          <td>{{end.name}}</td>
+          <td>{{end.count}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
 </body>
 </html>

@@ -5,7 +5,7 @@ from fastapi.routing import APIRoute
 
 from pydantic import BaseModel
 from typing import Optional
-import dashboard 
+import dashboard
 
 app = FastAPI()
 app.router.route_class = LoggingRoute
@@ -20,6 +20,10 @@ class Item(BaseModel):
 @app.post("/hello_world")
 async def post_test(item:Item,response: Response):  
     return item
+
+@app.post("/hello_prasanna")
+async def ret_pras():
+    return {"Name":"Prasanna Kumar"}
 
 @app.get("/hello_world")
 async def get_test(response: Response):  

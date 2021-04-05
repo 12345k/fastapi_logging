@@ -13,7 +13,7 @@ from datetime import datetime
 from fastapi.routing import APIRoute
 import sqlite3
 
-conn = sqlite3.connect('./data/test.db')
+conn = sqlite3.connect('./database/test.db')
 
 conn.execute('''CREATE TABLE IF NOT EXISTS REQUEST
          (ENDPOINT        TEXT    NOT NULL,
