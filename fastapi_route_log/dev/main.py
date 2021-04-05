@@ -9,7 +9,6 @@ import dashboard
 
 app = FastAPI()
 app.router.route_class = LoggingRoute
-dashboard.router.route_class = LoggingRoute
 app.include_router(dashboard.router)
 
 class Item(BaseModel):
