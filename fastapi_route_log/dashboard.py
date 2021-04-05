@@ -66,7 +66,7 @@ async def read_item(request: Request,credentials: HTTPBasicCredentials = Depends
     end_json = utils(end_json_temp)
     # end_json
     conn.close()
-    return templates.TemplateResponse("dashboard.html", {"request": request,
+    return templates.TemplateResponse("index.html", {"request": request,
                                                          "data":data,
                                                          "count":len_cursor,
                                                          "API":end_json,

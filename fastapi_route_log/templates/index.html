@@ -1,239 +1,386 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Dashboard</title>
+    <!-- Include Bootstrap for styling -->
+    <!-- <link rel="stylesheet"
+    href=
+    "https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> -->
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <!-- Include the Bootstrap Table CSS
+    for the table -->
+    <link rel="stylesheet" 
+    href=
+    "https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css">
 </head>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.2.0/anime.min.js"></script>
 <style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
 
-@import url('https://rsms.me/inter/inter-ui.css');
-::selection {
-  background: #2D2F36;
-}
-::-webkit-selection {
-  background: #2D2F36;
-}
-::-moz-selection {
-  background: #2D2F36;
-}
-body {
-  background: white;
-  font-family: 'Inter UI', sans-serif;
-  margin: 0;
-  padding: 20px;
-}
-.page {
-  background: #e2e2e5;
-  display: flex;
-  flex-direction: column;
-  height: calc(100% - 40px);
-  position: absolute;
-  place-content: center;
-  width: calc(100% - 40px);
-}
-@media (max-width: 767px) {
-  .page {
-    height: auto;
-    margin-bottom: 20px;
-    padding-bottom: 20px;
-  }
-}
-.container {
-  display: flex;
-  height: 320px;
-  margin: 0 auto;
-  width: 640px;
-}
-@media (max-width: 767px) {
-  .container {
-    flex-direction: column;
-    height: 630px;
-    width: 320px;
-  }
-}
-.left {
-  background: white;
-  height: calc(100% - 40px);
-  top: 20px;
-  position: relative;
-  width: 50%;
-}
-@media (max-width: 767px) {
-  .left {
-    height: 100%;
-    left: 20px;
-    width: calc(100% - 40px);
-    max-height: 270px;
-  }
-}
-.login {
-  font-size: 50px;
-  font-weight: 900;
-  margin: 50px 40px 40px;
-}
-.eula {
-  color: #999;
-  font-size: 14px;
-  line-height: 1.5;
-  margin: 40px;
-}
-.right {
-  background: #474A59;
-  box-shadow: 0px 0px 40px 16px rgba(0,0,0,0.22);
-  color: #F1F1F2;
-  position: relative;
-  width: 50%;
-}
-@media (max-width: 767px) {
-  .right {
-    flex-shrink: 0;
-    height: 100%;
-    width: 100%;
-    max-height: 350px;
-  }
-}
-svg {
-  position: absolute;
-  width: 320px;
-}
-path {
-  fill: none;
-  stroke: url(#linearGradient);;
-  stroke-width: 4;
-  stroke-dasharray: 240 1386;
-}
-.form {
-  margin: 40px;
-  position: absolute;
-}
-label {
-  color:  #c2c2c5;
-  display: block;
-  font-size: 14px;
-  height: 16px;
-  margin-top: 20px;
-  margin-bottom: 5px;
-}
-input {
-  background: transparent;
-  border: 0;
-  color: #f2f2f2;
-  font-size: 20px;
-  height: 30px;
-  line-height: 30px;
-  outline: none !important;
-  width: 100%;
-}
-input::-moz-focus-inner { 
-  border: 0; 
-}
-#submit {
-  color: #707075;
-  margin-top: 40px;
-  transition: color 300ms;
-}
-#submit:focus {
-  color: #f2f2f2;
-}
-#submit:active {
-  color: #d0d0d2;
-}
+    body {
+        font-family: "Hind Vadodara", -apple-system, BlinkMacSystemFont, Segoe UI,
+            Helvetica Neue, Arial, sans-serif;
+    }
 
+    .container {
+        display: flex;
+        height: 100vh;
+        width: 100vw;
+        flex-wrap: wrap;
+        overflow: hidden;
+    }
+
+    .main {
+        height: calc(100% - 50px);
+        display: flex;
+        flex: 1;
+    }
+
+    .sidebar {
+        height: 100%;
+        width: 220px;
+        box-sizing: border-box;
+        box-shadow: 0 0 2rem 0 rgb(0 0 0 / 5%);
+        overflow: hidden;
+        transition: width 0.5s ease;
+    }
+
+    .container.nav-closed .sidebar,
+    .container.nav-closed .header-logo {
+        width: 0;
+    }
+
+    .sidebar ul {
+        display: flex;
+        flex-direction: column;
+        padding: 5px;
+    }
+
+    .sidebar ul li {
+        display: flex;
+        align-items: center;
+    }
+
+    .sidebar ul li a {
+        color: #000;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding: 10px;
+        white-space: nowrap;
+    }
+
+    .sidebar ul li a.active,
+    .sidebar ul li a:hover {
+        background: #e8ecef;
+    }
+
+    .sidebar ul li span {
+        margin-left: 16px;
+        font-size: 16px;
+        font-weight: 100;
+    }
+
+    .sidebar ul li i {
+        font-size: 18px;
+        color: #111;
+        font-weight: normal;
+    }
+
+    .header {
+        height: 50px;
+        background: #303f9f;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        flex-basis: 100%;
+    }
+
+    .sidebar ul li a.active i {
+        color: #303f9e;
+    }
+
+    .site-logo {
+        height: 32px;
+        width: 32px;
+        min-height: 32px;
+        min-width: 32px;
+        margin: 0 18px 0 15px;
+    }
+
+    .site-logo path {
+        fill: #fff;
+    }
+
+    .site-title {
+        color: #fff;
+        font-size: 24px;
+        letter-spacing: 1px;
+        font-weight: 400;
+    }
+
+    .page-content {
+        padding: 10px 20px;
+        box-sizing: border-box;
+        width: 100%;
+        flex: 1;
+        overflow: scroll;
+    }
+
+    .page-content h1 {
+        font-size: 20px;
+        font-weight: 400;
+        color: #333;
+    }
+
+    .header-search {
+        height: 100%;
+        align-items: center;
+        display: flex;
+        padding: 0 20px;
+        flex: 1;
+    }
+
+    .header-search .button-menu {
+        width: 28px;
+        height: 28px;
+        margin-right: 15px;
+        background: none;
+        border: 0;
+        cursor: pointer;
+    }
+
+    .header-logo {
+        display: flex;
+        align-items: center;
+        width: 220px;
+        overflow: hidden;
+        transition: width 0.5s ease;
+    }
+
+    .header-search input[type="search"] {
+        height: 100%;
+        width: 300px;
+        padding: 10px 20px;
+        box-sizing: border-box;
+        font-size: 14px;
+        font-weight: 100;
+        background: none;
+        border: none;
+        color: #fff;
+    }
+
+    .header-search input[type="search"]:focus {
+        outline: none;
+    }
+
+    .header-search input[type="search"]::placeholder {
+        color: #ccc;
+    }
+
+    .header-search .button-menu:focus {
+        outline: none;
+        border: none;
+    }
+
+    .header-search .button-menu svg path {
+        fill: #fff;
+    }
+
+    @media screen and (max-width: 991px) {
+        .page-content {
+            width: 100vw;
+        }
+    }
+
+    @media screen and (max-width: 767px) {
+        .header-logo {
+            display: none;
+        }
+    }
 </style>
-<body>
-    <div class="page">
-        <div class="container">
-          <div class="left">
-            <div class="login">Login</div>
-            <div class="eula">Monitor all the request for your APIs</div>
-          </div>
-          <div class="right">
-            <svg viewBox="0 0 320 300">
-              <defs>
-                <linearGradient
-                                inkscape:collect="always"
-                                id="linearGradient"
-                                x1="13"
-                                y1="193.49992"
-                                x2="307"
-                                y2="193.49992"
-                                gradientUnits="userSpaceOnUse">
-                  <stop
-                        style="stop-color:#ff00ff;"
-                        offset="0"
-                        id="stop876" />
-                  <stop
-                        style="stop-color:#ff0000;"
-                        offset="1"
-                        id="stop878" />
-                </linearGradient>
-              </defs>
-              <path d="m 40,120.00016 239.99984,-3.2e-4 c 0,0 24.99263,0.79932 25.00016,35.00016 0.008,34.20084 -25.00016,35 -25.00016,35 h -239.99984 c 0,-0.0205 -25,4.01348 -25,38.5 0,34.48652 25,38.5 25,38.5 h 215 c 0,0 20,-0.99604 20,-25 0,-24.00396 -20,-25 -20,-25 h -190 c 0,0 -20,1.71033 -20,25 0,24.00396 20,25 20,25 h 168.57143" />
-            </svg>
-            <div class="form">
-              <label for="email">Email</label>
-              <input type="email" id="email">
-              <label for="password">Password</label>
-              <input type="password" id="password">
-              <input type="submit" id="submit" value="Submit">
-            </div>
-          </div>
-        </div>
-      </div>
-      
-</body>
 
+<body onload="defaultData();">
+    <link rel="stylesheet" href="https://cdn.lineicons.com/2.0/LineIcons.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Vadodara:wght@300;500&display=swap" rel="stylesheet">
+
+    <div class="container">
+        <div class="header">
+            <div class="header-logo">
+                <svg class="site-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                    <path
+                        d="M512 256a15 15 0 00-7.1-12.8l-52-32 52-32.5a15 15 0 000-25.4L264 2.3c-4.8-3-11-3-15.9 0L7 153.3a15 15 0 000 25.4L58.9 211 7.1 243.3a15 15 0 000 25.4L58.8 301 7.1 333.3a15 15 0 000 25.4l241 151a15 15 0 0015.9 0l241-151a15 15 0 00-.1-25.5l-52-32 52-32.5A15 15 0 00512 256zM43.3 166L256 32.7 468.7 166 256 298.3 43.3 166zM468.6 346L256 479.3 43.3 346l43.9-27.4L248 418.7a15 15 0 0015.8 0L424.4 319l44.2 27.2zM256 388.3L43.3 256l43.9-27.4L248 328.7a15 15 0 0015.8 0L424.4 229l44.1 27.2L256 388.3z" />
+                </svg>
+                <span class="site-title">Monitor</span>
+            </div>
+            <div class="header-search">
+                <button class="button-menu"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 385 385">
+                        <path
+                            d="M12 120.3h361a12 12 0 000-24H12a12 12 0 000 24zM373 180.5H12a12 12 0 000 24h361a12 12 0 000-24zM373 264.7H132.2a12 12 0 000 24H373a12 12 0 000-24z" />
+                    </svg></button>
+                <input type="search" placeholder="Search Documentation..." />
+            </div>
+        </div>
+        <div class="main">
+            <div class="sidebar">
+                <ul>
+                    <li><a href="#dashboard" id="nav_dashboard" class="active" onclick="showData('dashboard')"><i class="lni lni-home"></i><span>Dashboard</span></a></li>
+                    <li><a href="#form_element" id="nav_form_element" onclick="showData('form_element')"><i class="lni lni-text-format"></i><span>Form Elements</span></a></li>
+                    <li><a href="#charts" id="nav_charts" onclick="showData('charts')"><i class="lni lni-bar-chart"></i><span>Charts</span></a></li>
+                    <li><a href="#grid_system" id="nav_grid_system" onclick="showData('grid_system')"><i class="lni lni-grid"></i><span>Grid System</span></a></li>
+                    <li><a href="#notification" id="nav_notification" onclick="showData('notification')"><i class="lni lni-bullhorn"></i><span>Notifications</span></a></li>
+                    <li><a href="#help" id="nav_help" onclick="showData('help')"><i class="lni lni-support"></i><span>Help & Support</span></a></li>
+                </ul>
+            </div>
+            <div class="page-content" >
+                <div id="dashboard">
+                    <center>
+                        <h1>Dashboard</h1>
+                    </center>
+                    No. of API hits: {{ count }}
+                    <br>
+                    All Data:
+
+                    {{ data }}
+                    <br>
+                    Unique API:
+                    <table class="table table-striped table-bordered">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for end in API %}
+                            <tr>
+                                <td>{{end.name}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <br>
+                    API FREQUENCY:
+                    <table class="table table-striped table-bordered">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>name</th>
+                                <th>count</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for end in API_Frequency %}
+                            <tr>
+                                <td>{{end.name}}</td>
+                                <td>{{end.count}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>   
+                <div id="form_element">
+                    <h1>Hello Form Element</h1>
+                
+                </div>
+
+                <div id="charts">
+                    <h1>Hello charts</h1>
+                
+                </div>
+
+                <div id="notification">
+                    <h1>Hello notification</h1>
+                
+                </div>
+
+                <div id="help">
+                    <h1>Hello help</h1>
+                
+                </div>
+            </div>
+            </div>
+            <br>
+            
+        </div>
+      
+    </div>
+
+    
+</body>
 <script>
-    var current = null;
-document.querySelector('#email').addEventListener('focus', function(e) {
-  if (current) current.pause();
-  current = anime({
-    targets: 'path',
-    strokeDashoffset: {
-      value: 0,
-      duration: 700,
-      easing: 'easeOutQuart'
-    },
-    strokeDasharray: {
-      value: '240 1386',
-      duration: 700,
-      easing: 'easeOutQuart'
+    function defaultData()
+    {
+        names=["dashboard","form_element","charts","notification","help"]
+        var i;
+        for (i = 0; i < names.length; i++) {
+       
+            if (names[i] == "dashboard")
+            {
+                document.getElementById(names[i]).style.display = "block";
+                document.getElementById("nav_"+names[i]).classList.add("active");
+                console.log("show",names[i]);
+            }
+            else
+            {
+                console.log("hidden",names[i]);
+                document.getElementById("nav_"+names[i]).classList.remove("active");
+                document.getElementById(names[i]).style.display = "none";
+            }
+        } 
+
     }
-  });
-});
-document.querySelector('#password').addEventListener('focus', function(e) {
-  if (current) current.pause();
-  current = anime({
-    targets: 'path',
-    strokeDashoffset: {
-      value: -336,
-      duration: 700,
-      easing: 'easeOutQuart'
-    },
-    strokeDasharray: {
-      value: '240 1386',
-      duration: 700,
-      easing: 'easeOutQuart'
+    function showData(active){
+        names=["dashboard","form_element","charts","notification","help"]
+        var i;
+        for (i = 0; i < names.length; i++) {
+       
+            if (names[i] == active)
+            {
+                document.getElementById(names[i]).style.display = "block";
+                document.getElementById("nav_"+names[i]).classList.add("active");
+                console.log("show",names[i])
+            }
+            else
+            {
+                console.log("hidden",names[i])
+                document.getElementById("nav_"+names[i]).classList.remove("active");
+                document.getElementById(names[i]).style.display = "none";
+            }
+        } 
+
     }
-  });
-});
-document.querySelector('#submit').addEventListener('focus', function(e) {
-  if (current) current.pause();
-  current = anime({
-    targets: 'path',
-    strokeDashoffset: {
-      value: -730,
-      duration: 700,
-      easing: 'easeOutQuart'
-    },
-    strokeDasharray: {
-      value: '530 1386',
-      duration: 700,
-      easing: 'easeOutQuart'
+    let menuButton = document.querySelector(".button-menu");
+    let container = document.querySelector(".container");
+    let pageContent = document.querySelector(".page-content");
+    let responsiveBreakpoint = 991;
+
+    if (window.innerWidth <= responsiveBreakpoint) {
+        container.classList.add("nav-closed");
     }
-  });
-});
+
+    menuButton.addEventListener("click", function () {
+        container.classList.toggle("nav-closed");
+    });
+
+    pageContent.addEventListener("click", function () {
+        if (window.innerWidth <= responsiveBreakpoint) {
+            container.classList.add("nav-closed");
+        }
+    });
+
+
+    window.addEventListener("resize", function () {
+        if (window.innerWidth > responsiveBreakpoint) {
+            container.classList.remove("nav-closed");
+        }
+    });
 </script>
+
 </html>
