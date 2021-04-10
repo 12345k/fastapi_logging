@@ -16,6 +16,49 @@
     <link rel="stylesheet" 
     href=
     "https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css">
+
+    <!-- HighCharts -->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>		
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+    <script type="text/javascript">
+        $(function () {
+                var processed_json = new Array();   
+
+                $.getJSON(window.location.href+'/api_frequency', function(data) {
+                    // Populate series
+                    console.log(data);
+                    for (i = 0; i < data.length; i++){
+                        processed_json.push([data[i].name,data[i].count]);
+                    }
+                 
+                    // draw chart
+                    $('#api_freq_chart').highcharts({
+                    chart: {
+                        type: "column"
+                    },
+                    title: {
+                        text: "Endpoint"
+                    },
+                    xAxis: {
+                        type: 'category',
+                        allowDecimals: false,
+                        title: {
+                            text: ""
+                        }
+                    },
+                    yAxis: {
+                        title: {
+                            text: "Count"
+                        }
+                    },
+                    series: [{
+                        name: 'Count',
+                        data: processed_json
+                    }]
+                }); 
+            });
+        });
+    </script>
 </head>
 <style>
     * {
@@ -284,6 +327,11 @@
                             {% endfor %}
                         </tbody>
                     </table>
+
+                    <div style="width: 800px; margin: 2em auto; padding: 1em; border: 1px solid red; border-radius: 0.5em">
+                        <center>API frequency count</center>
+                        </div>
+                        <div id="api_freq_chart" style="height: 400px"></div>
                 </div>   
                 <div id="form_element">
                     <h1>Hello Form Element</h1>

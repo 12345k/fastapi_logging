@@ -12,8 +12,14 @@ from fastapi.security import HTTPBasic, HTTPBasicCredentials
 import secrets
 from collections import Counter
 
+
 router = APIRouter()
 security = HTTPBasic()
+
+
+
+
+
 
 # router.mount("/static", StaticFiles(directory="static"), name="static")
 
@@ -71,6 +77,27 @@ async def read_item(request: Request,credentials: HTTPBasicCredentials = Depends
                                                          "count":len_cursor,
                                                          "API":end_json,
                                                          "API_Frequency":api_counts})
+
+
+
+@router.get("/fastapi_dashboard/api_frequency")
+async def api_frequency():#request: Request,credentials: HTTPBasicCredentials = Depends(get_current_username)):
+    conn = sqlite3.connect('./database/test.db')
+    conn.row_factory = sqlite3.Row 
+    cursor = conn.execute("SELECT * FROM REQUEST").fetchall()
+    len_cursor = len(cursor)
+    temp_data = [dict(ix) for ix in cursor]
+    data = json.dumps( [dict(ix) for ix in cursor] ) #CREATE JSON
+    end_cursor = conn.execute("SELECT DISTINCT ENDPOINT FROM REQUEST").fetchall()
+    end_json_temp = [dict(ix) for ix in end_cursor]
+    print(end_json_temp)
+    # end_json = json.dumps([dict(ix) for ix in end_cursor])
+
+    api_counts = utils(temp_data)
+    end_json = utils(end_json_temp)
+    # end_json
+    conn.close()
+    return api_counts
 
     # data = """
 
