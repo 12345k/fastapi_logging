@@ -24,14 +24,12 @@
         $(function () {
                 var processed_json = new Array();   
 
-                $.getJSON(window.location.href.split("#")[0]+'/api_frequency', function(data) {
+                $.getJSON(window.location.href+'/api_frequency', function(data) {
                     // Populate series
                     console.log(data);
                     for (i = 0; i < data.length; i++){
-                        console.log(data[i].name,data[i].count)
                         processed_json.push([data[i].name,data[i].count]);
                     }
-                 
                     // draw chart
                     $('#api_freq_chart').highcharts({
                     chart: {
@@ -68,7 +66,6 @@
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
     <script src="https://code.highcharts.com/modules/accessibility.js"></script>
-    <script src="https://code.highcharts.com/modules/data.js"></script>
 </head>
 <style>
     * {
@@ -294,44 +291,6 @@
         }
 </style>
 
-
-<!-- Time charts  -->
-<style>
-    .time-highcharts-figure, .highcharts-data-table table {
-    min-width: 360px; 
-    max-width: 800px;
-    margin: 1em auto;
-}
-
-.highcharts-data-table table {
-	font-family: Verdana, sans-serif;
-	border-collapse: collapse;
-	border: 1px solid #EBEBEB;
-	margin: 10px auto;
-	text-align: center;
-	width: 100%;
-	max-width: 500px;
-}
-.highcharts-data-table caption {
-    padding: 1em 0;
-    font-size: 1.2em;
-    color: #555;
-}
-.highcharts-data-table th {
-	font-weight: 600;
-    padding: 0.5em;
-}
-.highcharts-data-table td, .highcharts-data-table th, .highcharts-data-table caption {
-    padding: 0.5em;
-}
-.highcharts-data-table thead tr, .highcharts-data-table tr:nth-child(even) {
-    background: #f8f8f8;
-}
-.highcharts-data-table tr:hover {
-    background: #f1f7ff;
-}
-</style>
-
 <body onload="defaultData();">
     <link rel="stylesheet" href="https://cdn.lineicons.com/2.0/LineIcons.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -359,7 +318,7 @@
                 <ul>
                     <li><a href="#dashboard" id="nav_dashboard" class="active" onclick="showData('dashboard')"><i class="lni lni-home"></i><span>Dashboard</span></a></li>
                     <li><a href="#form_element" id="nav_form_element" onclick="showData('form_element')"><i class="lni lni-text-format"></i><span>Form Elements</span></a></li>
-                    <li><a href="#charts" id="nav_charts" onclick="showData('charts')"><i class="lni lni-bar-chart"></i><span>Time Charts</span></a></li>
+                    <li><a href="#charts" id="nav_charts" onclick="showData('charts')"><i class="lni lni-bar-chart"></i><span>Charts</span></a></li>
                     <li><a href="#grid_system" id="nav_grid_system" onclick="showData('grid_system')"><i class="lni lni-grid"></i><span>Grid System</span></a></li>
                     <li><a href="#notification" id="nav_notification" onclick="showData('notification')"><i class="lni lni-bullhorn"></i><span>Notifications</span></a></li>
                     <li><a href="#help" id="nav_help" onclick="showData('help')"><i class="lni lni-support"></i><span>Help & Support</span></a></li>
@@ -425,20 +384,11 @@
                           Due to their compact nature, they are often used with large sets of data.
                         </p>
                       </figure>
-                    <h1>{{List_OF_ENDPOINT}}</h1>
                 
                 </div>
 
                 <div id="charts">
-                    <h1>Hello Timechart</h1>
-                    <figure class="time-highcharts-figure">
-                        <div id="time-container"></div>
-                        <p class="time-highcharts-description">
-                            Highcharts has extensive support for time series, and will adapt
-                            intelligently to the input data. Click and drag in the chart to zoom in
-                            and inspect the data.
-                        </p>
-                    </figure>
+                    <h1>Hello charts</h1>
                 
                 </div>
 
@@ -456,10 +406,11 @@
             <br>
             
         </div>
+      
     </div>
+
+    
 </body>
-
-
 <script>
     function defaultData()
     {
@@ -546,17 +497,22 @@
             marginBottom: 80,
             plotBorderWidth: 1
         },
+
+
         title: {
             text: 'Sales per employee per weekday'
         },
+
         xAxis: {
             categories: ['Alexander', 'Marie', 'Maximilian', 'Sophia', 'Lukas', 'Maria', 'Leon', 'Anna', 'Tim', 'Laura']
         },
+
         yAxis: {
             categories: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
             title: null,
             reversed: true
         },
+
         accessibility: {
             point: {
             descriptionFormatter: function (point) {
@@ -617,76 +573,9 @@
             }
             }]
         }
+
         });
+
 </script>
 
-<!-- time charts js  -->
-<script>
-    url=window.location.href.split("#")[0]+"/api_time_count";
-    Highcharts.getJSON(
-    url,
-    function (data) {
-
-        Highcharts.chart('time-container', {
-            chart: {
-                zoomType: 'x'
-            },
-            title: {
-                text: 'Overall API count'
-            },
-            subtitle: {
-                text: document.ontouchstart === undefined ?
-                    'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
-            },
-            xAxis: {
-                type: 'datetime',
-                labels: {
-                    format: '{value:%Y-%m-%e %H:%M:%S}'
-                }
-            },
-            yAxis: {
-                title: {
-                    text: 'Traffic rate'
-                }
-            },
-            
-            legend: {
-                enabled: false
-            },
-            plotOptions: {
-                area: {
-                    fillColor: {
-                        linearGradient: {
-                            x1: 0,
-                            y1: 0,
-                            x2: 0,
-                            y2: 1
-                        },
-                        stops: [
-                            [0, Highcharts.getOptions().colors[0]],
-                            [1, Highcharts.color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-                        ]
-                    },
-                    marker: {
-                        radius: 2
-                    },
-                    lineWidth: 1,
-                    states: {
-                        hover: {
-                            lineWidth: 1
-                        }
-                    },
-                    threshold: null
-                }
-            },
-
-            series: [{
-                type: 'area',
-                name: 'API hits',
-                data: data
-            }]
-        });
-    }
-);
-</script>
 </html>

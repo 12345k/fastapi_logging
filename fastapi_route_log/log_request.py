@@ -19,7 +19,8 @@ conn.execute('''CREATE TABLE IF NOT EXISTS REQUEST
          (ENDPOINT        TEXT    NOT NULL,
          TYPE            INT     NOT NULL,
          BODY            CHAR(50),
-         UUID            REAL);''')
+         UUID            REAL,
+         TIME           TEXT    NOT NULL);''')
 
 class LoggingRoute(APIRoute):
     def get_route_handler(self) -> Callable:
@@ -113,17 +114,16 @@ class LoggingRoute(APIRoute):
 
                 }
                 
-                
                 print(json.dumps(metrics_json,indent=4))
-
                 try:
                     if len(request_json) !=0:
                         url = str(request_json["url"]).replace("/","")
                         method=request_json["method"]
                         body=str(request_json["body"])
                         uuid_str=request_json["uuid"]
+                        time_value = request_json["ts"]
                         # print(body)
-                        conn.execute(f"INSERT INTO REQUEST VALUES (?,?,?,?)",( url , method, body, uuid_str ))
+                        conn.execute(f"INSERT INTO REQUEST VALUES (?,?,?,?,?)",( url , method, body, uuid_str,time_value ))
                         
                         # VALUES ({request_json["url"].replace("/","")}, {request_json["method"]},"str(request_json[body])", {request_json["uuid"]} )""");
                     conn.commit()

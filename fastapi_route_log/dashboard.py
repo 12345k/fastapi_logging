@@ -16,11 +16,6 @@ from collections import Counter
 router = APIRouter()
 security = HTTPBasic()
 
-
-
-
-
-
 # router.mount("/static", StaticFiles(directory="static"), name="static")
 
 
@@ -40,20 +35,19 @@ def get_current_username(credentials: HTTPBasicCredentials = Depends(security)):
     return credentials.username
 
 
-def utils(val):
+def utils(val,value):
     data = []
     for key in range(len(val)):
-        data.append(val[key]["ENDPOINT"])
+        data.append(val[key][value])
     new_data  = Counter(data)
-    del data
     new_data = dict(new_data)
-    data = []
+    temp_data = []
     for key,value in new_data.items():
         temp_json = {}
         temp_json["name"] = key
         temp_json["count"] = value
-        data.append(temp_json)
-    return data
+        temp_data.append(temp_json)
+    return temp_data,data
 
 @router.get("/fastapi_dashboard")
 async def read_item(request: Request,credentials: HTTPBasicCredentials = Depends(get_current_username)):
@@ -68,15 +62,16 @@ async def read_item(request: Request,credentials: HTTPBasicCredentials = Depends
     print(end_json_temp)
     # end_json = json.dumps([dict(ix) for ix in end_cursor])
 
-    api_counts = utils(temp_data)
-    end_json = utils(end_json_temp)
+    api_counts,_ = utils(temp_data,"ENDPOINT")
+    end_json,end_list = utils(end_json_temp,"ENDPOINT")
     # end_json
     conn.close()
     return templates.TemplateResponse("index.html", {"request": request,
                                                          "data":data,
                                                          "count":len_cursor,
                                                          "API":end_json,
-                                                         "API_Frequency":api_counts})
+                                                         "API_Frequency":api_counts,
+                                                         "List_OF_ENDPOINT":end_list})
 
 
 
@@ -93,25 +88,29 @@ async def api_frequency():#request: Request,credentials: HTTPBasicCredentials = 
     print(end_json_temp)
     # end_json = json.dumps([dict(ix) for ix in end_cursor])
 
-    api_counts = utils(temp_data)
-    end_json = utils(end_json_temp)
+    api_counts,data = utils(temp_data,"ENDPOINT")
+   
+    end_json = utils(end_json_temp,"ENDPOINT")
     # end_json
     conn.close()
     return api_counts
 
-    # data = """
 
-    #             <!DOCTYPE html>
-    #             <html lang="en">
-    #             <head>
-    #                 <meta charset="UTF-8">
-    #                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    #                 <title>Dashboard</title>
-    #             </head>
-    #             <body>
-    #                 <h1> hello world to dashboard </h1>
-    #             </body>
-    #             </html>
 
-    # """
-    # return Response(content=data, media_type="text/html")
+@router.get("/fastapi_dashboard/api_time_count")
+async def time_count():#request: Request,credentials: HTTPBasicCredentials = Depends(get_current_username)):
+    conn = sqlite3.connect('./database/test.db')
+    conn.row_factory = sqlite3.Row 
+    end_cursor = conn.execute("SELECT TIME,COUNT(TIME) AS COUNT FROM REQUEST GROUP BY TIME").fetchall()
+    end_json_temp =  [[i["TIME"],i['COUNT']] for i in end_cursor]
+    print(end_json_temp)
+    # end_json = json.dumps([dict(ix) for ix in end_cursor])
+
+    # api_counts,data = utils(temp_data,"TIME")
+   
+    # end_json = utils(end_json_temp,"TIME")
+    # # end_json
+    # conn.close()
+    return end_json_temp
+    # return Response(content=end_json_temp, media_type="application/json")
+
