@@ -626,7 +626,7 @@
     Highcharts.getJSON(
     url,
     function (data) {
-
+        console.log(data);
         Highcharts.chart('time-container', {
             chart: {
                 zoomType: 'x'
@@ -641,7 +641,12 @@
             xAxis: {
                 type: 'datetime',
                 labels: {
-                    format: '{value:%Y-%m-%e %H:%M:%S}'
+                     
+                    formatter: function() { 
+                        return Highcharts.dateFormat('%Y-%m-%d', this.value);
+                        },
+                    format : '{value:%Y-%m-%e %H:%M:%S}' 
+                    // %Y-%m-%e %H:%M:%S}'
                 }
             },
             yAxis: {

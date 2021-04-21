@@ -11,7 +11,7 @@ from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 import secrets
 from collections import Counter
-
+from datetime import datetime
 
 router = APIRouter()
 security = HTTPBasic()
@@ -102,8 +102,11 @@ async def time_count():#request: Request,credentials: HTTPBasicCredentials = Dep
     conn = sqlite3.connect('./database/test.db')
     conn.row_factory = sqlite3.Row 
     end_cursor = conn.execute("SELECT TIME,COUNT(TIME) AS COUNT FROM REQUEST GROUP BY TIME").fetchall()
-    end_json_temp =  [[i["TIME"],i['COUNT']] for i in end_cursor]
+    for i in end_cursor:
+        print(i["TIME"])
+    end_json_temp =  [[datetime.strptime(i["TIME"],'%Y-%m-%d %H:%M:%S'),i['COUNT']] for i in end_cursor]
     print(end_json_temp)
+    print("*******************")
     # end_json = json.dumps([dict(ix) for ix in end_cursor])
 
     # api_counts,data = utils(temp_data,"TIME")
