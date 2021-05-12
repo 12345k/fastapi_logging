@@ -90,7 +90,6 @@ class LoggingRoute(APIRoute):
                     'ts': f'{datetime.now():%Y-%m-%d %H:%M:%S%z}'   
 
                 }
-                print(json.dumps(request_json,indent=4))
                 
                 start_time = time.time()
                 response = await original_route_handler(request)
@@ -112,9 +111,9 @@ class LoggingRoute(APIRoute):
                     "ts": f'{datetime.now():%Y-%m-%d %H:%M:%S%z}'   
 
                 }
-                
-                
-                print(json.dumps(metrics_json,indent=4))
+                if "health" not in request.url.path:
+                    print(json.dumps(request_json,indent=4))
+                    print(json.dumps(metrics_json,indent=4))
 
                 try:
                     if len(request_json) !=0:

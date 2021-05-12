@@ -24,3 +24,11 @@ async def post_test(item:Item,response: Response):
 @app.get("/hello_world")
 async def get_test(response: Response):  
     return "hello world"
+
+@app.get("/health")
+async def get_health(response:Response):
+    return {"Status":200,"Health":"Good"}
+
+@app.get("/api/health")
+async def get_health(response:Response):
+    return {"Status":200,"Health":"Good"}
